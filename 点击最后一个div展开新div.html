@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body style="margin: 0;padding:0;">
+	<div style="height: 300px;background: red;" ></div>
+	<div style="height: 300px;background: blue;"></div>
+	<div style="height: 300px;background: yellow;"></div>
+	<div style="height: 300px;background: pink;"></div>
+	<div style="height: 300px;background: green;"></div>
+
+	<a href="#a"><div style="height: 300px;background: #eee;" id="hahaha"></div></a>
+	<div style="background: pink;display: none;line-height: 200px;" id="aaa">aaaaaaabraaaaaaaaaaaaaaaa</div>
+
+
+
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		$("#hahaha").on("click",function(){
+			$("#aaa").slideToggle(200,function(){
+					 $('html, body').animate({  
+                    scrollTop: $("#aaa").offset().top  
+                },1000);  
+			});
+		
+
+		})
+
+
+	</script>
+</body>
+</html>
