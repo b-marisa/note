@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="easeljs-0.8.2.min.js"></script>
+	<style>
+		body>div{
+			background: pink;
+		}
+	</style>
+</head>
+<body>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+<div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+	<canvas id="canvas" width="1000px" height="500px" style="position: absolute;top: 0;"></canvas>
+
+</body>
+<script>
+	var stage;
+	var img=new Image();
+	var sprite;
+	window.onload=function(){
+		var canvas;
+		
+		canvas=document.getElementById("canvas");
+		stage=new createjs.Stage(canvas);
+
+		//经测试，stagemousedown按下鼠标左或右键都有效，并且在松开左或右键时，会触发一次stagemousemove
+		stage.addEventListener("stagemousedown",clickCanvas);	
+		stage.addEventListener("stagemousemove",moveCanvas);
+
+		var data={						//创建一个序列
+			images:["2.png"],
+			frames:{width:20,height:20,regX:10,regY:10}
+		}
+
+		//sprite是承载序列，组成动画效果
+		sprite = new createjs.Sprite(new createjs.SpriteSheet(data));
+		console.log(sprite)
+		createjs.Ticker.setFPS(20);
+		createjs.Ticker.addEventListener("tick",tick);
+		console.log(sprite)
+	}
+
+	function tick(e){
+		var t=stage.getNumChildren();
+		for (var i = t-1; i > 0; i--) {
+			var s=stage.getChildAt(i);
+
+			s.vY+=2;
+			s.vX+=1;
+			s.x+=s.vX;
+			s.y+=s.vY;
+
+			s.scaleX=s.scaleY=s.scaleX+s.vS;
+			s.alpha+=s.vA;
+
+			if(s.alpha<=0||s.y>canvas.height){
+				stage.removeChildAt(i);
+			}
+		}
+		stage.update(e);
+	}
+	function clickCanvas(e){
+			addS(Math.random()*200+100,stage.mouseX,stage.mouseY,2)
+	}
+
+	function moveCanvas(e){
+			addS(Math.random()*2+1,stage.mouseX,stage.mouseY,1)
+	}
+	//这个效果主要有三个部分，添加元素，元素的运动轨迹，元素变淡变小
+	function addS(count,x,y,speed){		
+		for(var i=0;i<count;i++){
+			var s=sprite.clone();			//添加元素
+			s.x=x;							//传递鼠标位置
+			s.y=y;
+			s.alpha=Math.random()*0.5+0.5;			//透明度、明暗
+			s.scaleX=s.scaleY=Math.random()+0.3;   	//缩放、大小
+			var a= Math.PI*2 *Math.random();	//这个a不是alpha。。。。
+			var v=(Math.random()-0.5)*30*speed;
+			s.vX=Math.cos(a)*v;
+			s.vY=Math.sin(a)*v;
+			s.vS=(Math.random()-0.5)*0.2;		//scale的变化
+			s.vA=-Math.random()*0.05-0.01;		//alpha的变化
+			stage.addChild(s);
+
+		}
+	}
+</script>
+</html>
