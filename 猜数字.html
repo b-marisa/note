@@ -39,7 +39,10 @@
 		<button class="start">开始</button>
 		<button class="answer">显示答案</button>
 		<button class="end">结束</button>
+		<br />
+		<input type="text" placeholder="请输入" style="margin-left: 20px;">
 	</div>
+
 	
 	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script>
@@ -132,6 +135,8 @@
 				draw("end");
 				num =null;
 			});
+
+			draw("init");
 		})
 
 
