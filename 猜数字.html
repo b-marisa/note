@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>猜数字</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
+		.content{
+			position: relative;
+			width: auto;
+		}
+
+		.start{
+			position: absolute;
+			left: 80px;
+    		bottom: 50px;
+		}
+
+		.answer{
+			position: absolute;
+			left: 180px;
+    		bottom: 50px;
+		}
+
+		.end{
+			position: absolute;
+			left: 300px;
+    		bottom: 50px;
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<canvas id="canvas" width="420px" height="320px"></canvas>
+		<button class="start">开始</button>
+		<button class="answer">显示答案</button>
+		<button class="end">结束</button>
+	</div>
+	
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		$(window).load(function(){
+			// var canvas=$("#canvas2")[0].getContext("2d");
+			// img.src = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3255492702,1431047136&fm=27&gp=0.jpg";
+			// img.onload = function(){
+			// 	context.drawImage(img,0,0,100,100,160,130,100,100);
+			// }
+			window.addEventListener("keyup",control,true)
+
+			var num,userkey,key;
+
+			function numinit(){
+				num = Math.ceil(26*Math.random())+64;//65-90 :A-Z
+				if(num == 64)this.callee();
+			}
+
+			function control(e){	
+				console.log(e);
+				userkey = e.keyCode;
+				key = String.fromCharCode(userkey).toLowerCase();
+				if(userkey > 90 || userkey < 65){
+					draw("error");
+					return;
+				}
+				if (userkey>num) {
+					draw("upper");
+				}else if(userkey<num){
+					draw("lower");
+				}else if(userkey==num){
+					draw("correct");
+				}
+			}
+			
+			function draw(state){
+				var canvas=document.getElementById("canvas"),
+				context=canvas.getContext("2d");
+				canvas.height = canvas.height;
+				context.fillStyle = "#000";
+				context.strokeStyle = "#ff0000";
+				context.strokeRect(20,20,400,300);
+				context.font = "30px cursive";
+				context.textBaseline = "top";
+				context.fillText("猜字母",150,80);
+
+				switch(state){
+					case "init":
+							context.fillText("点击开始按钮开始游戏",80,180);
+						break;
+					case "start":
+							context.fillText("请输入一个字母",80,180);
+						break;
+					case "answer":
+							context.fillText("正确的答案是:"+String.fromCharCode(num).toLowerCase(),80,180);
+						break;
+					case "end":
+							context.fillText("游戏结束，不再玩了么？",80,180);
+						break;
+					case "upper":
+							context.fillText("您输入的是:"+key+",大了",80,180);
+						break;
+					case "lower":
+							context.fillText("您输入的是:"+key+",小了",80,180);
+						break;
+					case "correct":
+							context.fillText("您输入的是:"+key,80,150);
+							context.fillText("猜对啦，再来一把？",80,180);
+						break;
+					case "error":
+							context.fillText("不是字母，请重新输入",80,180);
+						break;
+					default:
+						break;
+				}
+				
+			}
+
+			$(".start").click(function start(){
+				draw("start");
+				numinit();
+			});
+
+			$(".answer").click(function answer(){
+				draw("answer");
+				num = null;
+			});
+
+			$(".end").click(function end(){
+				draw("end");
+				num =null;
+			});
+		})
+
+
+	</script>
+</body>
+</html>
